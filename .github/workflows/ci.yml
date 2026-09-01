@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install backend deps
+        working-directory: ./backend
+        run: npm ci
+      - name: Run lint
+        working-directory: ./backend
+        run: npm run lint
+      - name: Run tests
+        working-directory: ./backend
+        env:
+          NODE_ENV: test
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          JWT_SECRET: test_jwt_secret_key_12345
+        run: npm test tests/health.test.js

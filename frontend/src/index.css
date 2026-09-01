@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --app-bg-start: #FAFAFA;
+  --app-bg-mid:   #FAFAFA;
+  --app-bg-end:   #FAFAFA;
+  --surface-1:    #FFFFFF;
+  --surface-2:    #F4F4F5;
+  --border-soft:  #E4E4E7;
+  --border-strong:#D4D4D8;
+  --text-main:    #18181B;
+  --text-muted:   #71717A;
+  --accent-1:     #18181B;
+  --accent-2:     #D97706;
+  --accent-3:     #0D9488;
+}
+
+html, body, #root {
+  min-height: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  color: var(--text-main);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #FAFAFA;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.app-theme-bg {
+  background-color: #FAFAFA;
+}
+
+.theme-nav {
+  background-color: #09090B;
+  color: #fff;
+  border-right: none;
+}
+
+.theme-surface-soft {
+  background-color: var(--surface-2);
+  border: 1px solid var(--border-soft);
+}
+
+.theme-muted { color: var(--text-muted); }
+
+/* Animations */
+.animate-fade-in  { animation: fadeIn 0.45s ease-out; }
+.animate-shake    { animation: shake 0.35s ease-in-out; }
+.animate-scale-in { animation: scaleIn 0.35s ease-out; }
+
+@keyframes fadeIn  { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+@keyframes shake   { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-4px)} 40%{transform:translateX(4px)} 60%{transform:translateX(-3px)} 80%{transform:translateX(3px)} }
+@keyframes scaleIn { from{opacity:0;transform:scale(0.96)} to{opacity:1;transform:scale(1)} }
+
+@layer components {
+  .btn-primary {
+    padding: 0.65rem 1.25rem;
+    border-radius: 0.625rem;
+    color: #FFFFFF;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    box-shadow: 0 2px 8px rgba(24, 24, 27, 0.25);
+    transition: all 0.2s ease;
+    background-color: #18181B !important;
+    background-image: none !important;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-primary:hover {
+    background-color: #27272A !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(24, 24, 27, 0.35);
+  }
+
+  .icon-container {
+    background-color: rgba(24, 24, 27, 0.08) !important;
+    color: #18181B !important;
+    box-shadow: 0 2px 8px rgba(24, 24, 27, 0.12) !important;
+    border: 1px solid rgba(24, 24, 27, 0.15) !important;
+    transition: all 0.3s ease;
+  }
+  .icon-container svg { color: #18181B !important; }
+  .icon-container:hover {
+    box-shadow: 0 4px 14px rgba(24, 24, 27, 0.22) !important;
+    transform: translateY(-2px);
+  }
+
+  .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+  .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+  .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(24, 24, 27, 0.2); border-radius: 4px; }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(24, 24, 27, 0.4); }
+}
