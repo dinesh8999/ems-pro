@@ -17,7 +17,7 @@ jobs:
           node-version: '18'
       - name: Install backend deps
         working-directory: ./backend
-        run: npm ci
+        run: HUSKY=0 npm ci
       - name: Run lint
         working-directory: ./backend
         run: npm run lint
