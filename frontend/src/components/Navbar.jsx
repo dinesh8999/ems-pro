@@ -1,118 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-const NAV_STYLES = `
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-.nb-sidebar {
-  position:fixed; left:0; top:0; height:100vh; z-index:40;
-  display:flex; flex-direction:column;
-  background: #09090B;
-  transition: width 0.35s cubic-bezier(0.4,0,0.2,1);
-  box-shadow: 4px 0 24px rgba(0,0,0,0.3);
-  overflow:visible;
-  font-family:'Inter',sans-serif;
-}
-.nb-sidebar.expanded { width:240px; }
-.nb-sidebar.collapsed { width:72px; }
-
-/* Collapse toggle */
-.nb-toggle {
-  position:absolute; right:-14px; top:36px;
-  width:28px; height:28px; border-radius:50%;
-  background:#D97706; border:3px solid #18181B;
-  color:#fff; display:flex; align-items:center; justify-content:center;
-  cursor:pointer; z-index:50; transition:background 0.2s,transform 0.2s;
-  box-shadow:0 2px 8px rgba(0,0,0,0.4);
-}
-.nb-toggle:hover { background:#B45309; transform:scale(1.1); }
-.nb-toggle svg { transition:transform 0.35s; }
-.nb-toggle.flipped svg { transform:rotate(180deg); }
-
-/* Brand */
-.nb-brand {
-  display:flex; flex-direction:column; align-items:center;
-  padding:28px 0 20px; cursor:pointer; gap:10px;
-  transition:all 0.3s; user-select:none;
-}
-.nb-logo-ring {
-  width:52px; height:52px; border-radius:16px;
-  background:#D97706;
-  display:flex; align-items:center; justify-content:center;
-  box-shadow:0 4px 14px rgba(217,119,6,0.35);
-  transition:transform 0.3s,box-shadow 0.3s;
-  flex-shrink:0;
-}
-.nb-brand:hover .nb-logo-ring { transform:scale(1.07) rotate(4deg); box-shadow:0 6px 22px rgba(217,119,6,0.5); }
-.nb-brand-text { text-align:center; }
-.nb-brand-name { font-size:18px; font-weight:800; color:#fff; letter-spacing:-0.3px; line-height:1.1; }
-.nb-brand-tag  { font-size:10px; color:rgba(255,255,255,0.45); font-weight:500; letter-spacing:0.15em; text-transform:uppercase; }
-
-/* Divider */
-.nb-divider { height:1px; background:rgba(255,255,255,0.08); margin:0 16px 16px; }
-
-/* Nav items */
-.nb-nav { flex:1; padding:0 10px; display:flex; flex-direction:column; gap:4px; overflow-y:auto; overflow-x:hidden; }
-.nb-nav::-webkit-scrollbar { width:0; }
-.nb-item {
-  display:flex; align-items:center; gap:12px;
-  border-radius:14px; padding:11px 12px;
-  cursor:pointer; transition:background 0.2s,transform 0.15s;
-  color:rgba(255,255,255,0.55); font-size:14px; font-weight:600;
-  position:relative; border:none; background:none; width:100%; text-align:left;
-  white-space:nowrap; overflow:hidden;
-}
-.nb-item:hover { background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.9); transform:translateX(2px); }
-.nb-item.active {
-  background:rgba(217,119,6,0.25);
-  color:#fff;
-  box-shadow:0 2px 10px rgba(217,119,6,0.2);
-}
-.nb-item.active::before {
-  content:'';
-  position:absolute; left:0; top:20%; height:60%; width:3px;
-  background:#F59E0B;
-  border-radius:0 3px 3px 0;
-}
-.nb-item-icon { width:20px; height:20px; flex-shrink:0; }
-.nb-item-label { transition:opacity 0.25s,transform 0.25s; }
-.collapsed .nb-item-label { opacity:0; pointer-events:none; width:0; overflow:hidden; }
-
-/* Bottom section */
-.nb-bottom { padding:12px 10px 16px; border-top:1px solid rgba(255,255,255,0.08); display:flex; flex-direction:column; gap:6px; }
-.nb-profile {
-  display:flex; align-items:center; gap:10px;
-  padding:10px 12px; border-radius:14px;
-  background:rgba(255,255,255,0.06); cursor:pointer;
-  transition:background 0.2s; border:none; width:100%; text-align:left;
-  overflow:hidden;
-}
-.nb-profile:hover { background:rgba(255,255,255,0.11); }
-.nb-avatar {
-  width:36px; height:36px; border-radius:10px; flex-shrink:0;
-  background:#D97706;
-  display:flex; align-items:center; justify-content:center;
-  font-size:14px; font-weight:800; color:#fff;
-  box-shadow:0 2px 6px rgba(217,119,6,0.3);
-}
-.nb-profile-info { flex:1; min-width:0; }
-.nb-profile-name { font-size:13px; font-weight:700; color:#fff; truncate; display:block; }
-.nb-profile-role { font-size:10px; color:rgba(255,255,255,0.45); display:block; }
-.nb-logout {
-  display:flex; align-items:center; gap:10px; justify-content:center;
-  padding:10px 12px; border-radius:14px;
-  background:rgba(239,68,68,0.12); color:rgba(239,68,68,0.85);
-  cursor:pointer; transition:background 0.2s,color 0.2s;
-  border:none; width:100%; font-size:13px; font-weight:700;
-  overflow:hidden; white-space:nowrap;
-}
-.nb-logout:hover { background:rgba(239,68,68,0.25); color:#fff; }
-.collapsed .nb-profile-info,
-.collapsed .nb-logout-text { display:none; }
-.collapsed .nb-item { justify-content:center; padding:12px; }
-.collapsed .nb-profile { justify-content:center; }
-.collapsed .nb-logout { justify-content:center; }
-`;
-
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -169,7 +57,6 @@ const Navbar = () => {
 
   return (
     <>
-      <style>{NAV_STYLES}</style>
       <aside className={`nb-sidebar ${isCollapsed ? 'collapsed' : 'expanded'}`}>
         {/* Toggle Button */}
         <button

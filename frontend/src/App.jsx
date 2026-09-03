@@ -1,5 +1,5 @@
 import { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { ToastProvider } from './context/ToastContext';
 import Loading from './components/Loading';
@@ -19,13 +19,13 @@ const Attendance = lazy(() => import('./pages/Attendance'));
 const Profile = lazy(() => import('./pages/Profile'));
 
 const NotFound = () => (
-  <div className="min-h-screen app-theme-bg flex flex-col items-center justify-center text-center px-4">
-    <div className="text-9xl font-black text-primary-5 mb-4">404</div>
-    <h1 className="text-3xl font-bold text-primary-5 mb-3">Page Not Found</h1>
+  <div className="min-h-screen bg-[#F8FAFC] flex flex-col items-center justify-center text-center px-4">
+    <div className="text-9xl font-black text-[#0F172A] mb-4">404</div>
+    <h1 className="text-3xl font-bold text-[#0F172A] mb-3">Page Not Found</h1>
     <p className="text-slate-500 mb-8 max-w-md">The page you are looking for doesn't exist or has been moved.</p>
-    <a href="/" className="btn-primary">
-      Go Home
-    </a>
+    <Link to="/" className="px-6 py-3 rounded-xl bg-[#0F172A] text-white text-sm font-bold shadow-md hover:bg-[#1E293B] transition-all">
+      Return to Home
+    </Link>
   </div>
 );
 

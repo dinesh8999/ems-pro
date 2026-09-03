@@ -21,19 +21,23 @@ dotenv.config();
 const app = express();
 
 // Middleware
-// Configure CORS: allow all in dev, restrict via CORS_ORIGIN in production (comma-separated list)
-const corsOptions = {};
-if (process.env.CORS_ORIGIN) {
-  const whitelist = process.env.CORS_ORIGIN.split(',').map(s => s.trim()).filter(Boolean);
-  corsOptions.origin = function(origin, callback) {
-    if (!origin || whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
+// Configure CORS for production Vercel & local development
+app.use(cors({
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true);
+    if (process.env.CORS_ORIGIN) {
+      const whitelist = process.env.CORS_ORIGIN.split(',').map(s => s.trim()).filter(Boolean);
+      if (whitelist.indexOf(origin) !== -1 || whitelist.includes('*')) {
+        return callback(null, true);
+      }
     }
-  };
-}
-app.use(cors(Object.keys(corsOptions).length ? corsOptions : undefined));
+    return callback(null, true);
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'X-CSRF-Token']
+}));
+app.options('*', cors());
 // Security headers
 app.use(helmet());
 

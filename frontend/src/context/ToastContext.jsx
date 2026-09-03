@@ -91,13 +91,6 @@ export const ToastProvider = ({ children }) => {
           </div>
         ))}
       </div>
-
-      <style>{`
-        @keyframes toastSlideIn {
-          from { opacity: 0; transform: translateX(60px) scale(0.96); }
-          to   { opacity: 1; transform: translateX(0)  scale(1); }
-        }
-      `}</style>
     </ToastContext.Provider>
   );
 };

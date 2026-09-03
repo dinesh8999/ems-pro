@@ -75,30 +75,100 @@ const MiniCalendar = ({ selectedDate, onSelectDate, attendanceDays = [], leaveDa
   );
 };
 
-/* ── Donut Chart ─────────────────────────────────────────────────────────────── */
+/* ── Donut Chart (Interactive 3D Flip Card) ─────────────────────────────────── */
 const DonutChart = ({ present, onLeave, absent, total }) => {
+  const [flipped, setFlipped] = useState(false);
+
   const pct = total > 0 ? Math.round((present / total) * 100) : 0;
+  const leavePct = total > 0 ? Math.round((onLeave / total) * 100) : 0;
+  const absentPct = total > 0 ? Math.round((absent / total) * 100) : 0;
+
   const r = 54, circ = 2 * Math.PI * r;
   const pA = (present / Math.max(total, 1)) * circ;
   const lA = (onLeave / Math.max(total, 1)) * circ;
   const aA = (absent / Math.max(total, 1)) * circ;
+
   return (
-    <div className="dc-donut">
-      <svg width="150" height="150" viewBox="0 0 150 150">
-        <circle cx="75" cy="75" r={r} fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="16" />
-        <circle cx="75" cy="75" r={r} fill="none" stroke="#EF4444" strokeWidth="16"
-          strokeDasharray={`${aA} ${circ - aA}`} strokeDashoffset={-pA - lA} transform="rotate(-90 75 75)" strokeLinecap="round" />
-        <circle cx="75" cy="75" r={r} fill="none" stroke="#F59E0B" strokeWidth="16"
-          strokeDasharray={`${lA} ${circ - lA}`} strokeDashoffset={-pA} transform="rotate(-90 75 75)" strokeLinecap="round" />
-        <circle cx="75" cy="75" r={r} fill="none" stroke="#7C3AED" strokeWidth="16"
-          strokeDasharray={`${pA} ${circ - pA}`} strokeDashoffset="0" transform="rotate(-90 75 75)" strokeLinecap="round" />
-        <text x="75" y="70" textAnchor="middle" fontSize="24" fontWeight="800" fill="#fff">{pct}%</text>
-        <text x="75" y="88" textAnchor="middle" fontSize="10" fill="rgba(255,255,255,0.5)">Attendance</text>
-      </svg>
-      <div className="dc-donut-leg">
-        <div className="dc-leg-row"><span className="dc-dot" style={{ background: '#7C3AED' }} /><span>{present} Present</span></div>
-        <div className="dc-leg-row"><span className="dc-dot" style={{ background: '#F59E0B' }} /><span>{onLeave} On Leave</span></div>
-        <div className="dc-leg-row"><span className="dc-dot" style={{ background: '#EF4444' }} /><span>{absent} Absent</span></div>
+    <div
+      className={`dc-flip-card ${flipped ? 'flipped' : ''}`}
+      onClick={() => setFlipped(!flipped)}
+      title="Click or hover to flip card"
+    >
+      <div className="dc-flip-inner">
+        {/* ── FRONT SIDE: DIAGRAM ONLY ── */}
+        <div className="dc-flip-front dc-pcard">
+          <div className="dc-flip-top">
+            <span className="dc-flip-title">Attendance Rate</span>
+            <span className="dc-flip-badge">
+              <svg style={{ width: 12, height: 12 }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              Data
+            </span>
+          </div>
+
+          <div className="dc-flip-diagram-wrap">
+            <svg width="170" height="170" viewBox="0 0 150 150">
+              <circle cx="75" cy="75" r={r} fill="none" stroke="#F1F5F9" strokeWidth="16" />
+              <circle cx="75" cy="75" r={r} fill="none" stroke="#EF4444" strokeWidth="16"
+                strokeDasharray={`${aA} ${circ - aA}`} strokeDashoffset={-pA - lA} transform="rotate(-90 75 75)" strokeLinecap="round" />
+              <circle cx="75" cy="75" r={r} fill="none" stroke="#F59E0B" strokeWidth="16"
+                strokeDasharray={`${lA} ${circ - lA}`} strokeDashoffset={-pA} transform="rotate(-90 75 75)" strokeLinecap="round" />
+              <circle cx="75" cy="75" r={r} fill="none" stroke="#0D9488" strokeWidth="16"
+                strokeDasharray={`${pA} ${circ - pA}`} strokeDashoffset="0" transform="rotate(-90 75 75)" strokeLinecap="round" />
+              <text x="75" y="70" textAnchor="middle" fontSize="24" fontWeight="800" fill="#0F172A">{pct}%</text>
+              <text x="75" y="88" textAnchor="middle" fontSize="11" fontWeight="600" fill="#64748B">Attendance</text>
+            </svg>
+          </div>
+
+          <p className="dc-flip-hint">Tap/hover to view data breakdown ➔</p>
+        </div>
+
+        {/* ── BACK SIDE: TEXT DATA ONLY ── */}
+        <div className="dc-flip-back dc-pcard">
+          <div className="dc-flip-top">
+            <span className="dc-flip-title">Attendance Details</span>
+            <span className="dc-flip-badge active">
+              <svg style={{ width: 12, height: 12 }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              Chart
+            </span>
+          </div>
+
+          <div className="dc-flip-data-wrap">
+            <div className="dc-data-item">
+              <div className="dc-data-label-wrap">
+                <span className="dc-dot" style={{ background: '#0D9488' }} />
+                <span className="dc-data-name">Present</span>
+              </div>
+              <span className="dc-data-badge green">{present} <small>({pct}%)</small></span>
+            </div>
+
+            <div className="dc-data-item">
+              <div className="dc-data-label-wrap">
+                <span className="dc-dot" style={{ background: '#F59E0B' }} />
+                <span className="dc-data-name">On Leave</span>
+              </div>
+              <span className="dc-data-badge amber">{onLeave} <small>({leavePct}%)</small></span>
+            </div>
+
+            <div className="dc-data-item">
+              <div className="dc-data-label-wrap">
+                <span className="dc-dot" style={{ background: '#EF4444' }} />
+                <span className="dc-data-name">Absent</span>
+              </div>
+              <span className="dc-data-badge red">{absent} <small>({absentPct}%)</small></span>
+            </div>
+
+            <div className="dc-data-total">
+              <span>Total Workforce</span>
+              <strong>{total} Employees</strong>
+            </div>
+          </div>
+
+          <p className="dc-flip-hint">Tap/hover to view chart ➔</p>
+        </div>
       </div>
     </div>
   );
@@ -140,265 +210,16 @@ const Column = ({ title, count, accent, bg, children, onAdd, addLabel }) => (
 /* ── Stat Pill ───────────────────────────────────────────────────────────────── */
 const StatPill = ({ label, value, icon, color }) => (
   <div className="dc-stat" style={{ '--sc': color }}>
-    <span className="dc-stat-icon" style={{ color }}>{icon}</span>
-    <div>
+    <div className="dc-stat-icon-wrap" style={{ backgroundColor: `${color}15`, color: color }}>
+      {icon}
+    </div>
+    <div className="dc-stat-content">
       <p className="dc-stat-val">{value}</p>
       <p className="dc-stat-lbl">{label}</p>
     </div>
   </div>
 );
-
-/* ── STYLES ──────────────────────────────────────────────────────────────────── */
-const DASH_STYLES = `
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
-/* Root */
-.dc-root {
-  min-height:100vh;
-  background:#F8FAFC;
-  font-family:'Inter',sans-serif;
-}
-.dc-wrap {
-  padding:28px 32px 32px;
-  max-width:1680px;
-  margin:0 auto;
-  display:flex; flex-direction:column; gap:22px;
-}
-
-/* ── Top Bar ── */
-.dc-topbar {
-  display:flex; align-items:center; justify-content:space-between;
-  flex-wrap:wrap; gap:14px;
-  animation:dcFade 0.4s ease;
-}
-.dc-title { font-size:28px; font-weight:800; color:#0F172A; letter-spacing:-0.6px; margin:0; }
-.dc-subtitle { font-size:13px; color:#64748B; margin:2px 0 0; }
-.dc-topbar-right { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
-
-/* Code chip */
-.dc-code-chip {
-  display:flex; align-items:center; gap:10px;
-  background:#fff; border:1px solid #E2E8F0; border-radius:14px; padding:8px 14px;
-  box-shadow:0 2px 8px rgba(15,23,42,0.06);
-}
-.dc-code-lbl { font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:#64748B; font-weight:700; }
-.dc-code-val { font-size:16px; font-weight:800; font-family:monospace; color:#0F172A; letter-spacing:0.05em; }
-.dc-code-copy {
-  background:#18181B; color:#fff; border:none;
-  border-radius:8px; padding:5px 11px; font-size:14px; font-weight:700; cursor:pointer;
-  transition:background 0.15s, transform 0.15s;
-  box-shadow:0 1px 4px rgba(24,24,27,0.2);
-}
-.dc-code-copy:hover { background:#27272A; transform:scale(1.04); }
-
-/* Add Employee btn */
-.dc-add-btn {
-  background:#18181B;
-  color:#fff; border:none; cursor:pointer; border-radius:12px;
-  padding:11px 22px; font-size:14px; font-weight:700;
-  box-shadow:0 2px 8px rgba(24,24,27,0.25);
-  transition:background 0.2s, transform 0.15s, box-shadow 0.2s;
-}
-.dc-add-btn:hover { background:#27272A; transform:translateY(-1px); box-shadow:0 4px 14px rgba(24,24,27,0.35); }
-.dc-dots {
-  background:#fff; border:1px solid #E4E4E7; color:#71717A;
-  border-radius:12px; padding:10px 14px; font-size:18px; cursor:pointer;
-  transition:background 0.2s; letter-spacing:2px; line-height:1;
-}
-.dc-dots:hover { background:#F4F4F5; color:#18181B; }
-
-/* ── Stat pills row ── */
-.dc-stats-row {
-  display:grid; grid-template-columns:repeat(4,1fr); gap:14px;
-  animation:dcFade 0.45s ease 0.05s both;
-}
-.dc-stat {
-  background:#fff; border-radius:16px; padding:14px 16px;
-  display:flex; align-items:center; gap:12px;
-  border:1px solid #E4E4E7; box-shadow:0 2px 8px rgba(24,24,27,0.04);
-  border-left:4px solid var(--sc,#18181B);
-  transition:transform 0.2s,box-shadow 0.2s;
-}
-.dc-stat:hover { transform:translateY(-2px); box-shadow:0 6px 16px rgba(15,23,42,0.08); }
-.dc-stat-icon { font-size:26px; }
-.dc-stat-val { font-size:22px; font-weight:800; color:#0F172A; line-height:1; }
-.dc-stat-lbl { font-size:11px; color:#64748B; font-weight:600; margin-top:2px; }
-
-/* ── Main layout ── */
-.dc-main {
-  display:grid; grid-template-columns:1fr 290px; gap:20px;
-  align-items:stretch; animation:dcFade 0.5s ease 0.1s both;
-}
-.dc-cols { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; align-items:stretch; height:100%; }
-
-/* ── Column ── */
-.dc-col {
-  background:#fff; border-radius:22px;
-  border:1px solid #E2E8F0;
-  box-shadow:0 2px 12px rgba(15,23,42,0.04);
-  display:flex; flex-direction:column; overflow:hidden;
-  height:100%;
-}
-.dc-col-hdr {
-  padding:18px 18px 12px;
-  border-bottom:1px solid #E2E8F0;
-  background:#F8FAFC;
-  display:flex; align-items:center; justify-content:space-between;
-}
-.dc-col-title { font-size:15px; font-weight:800; color:#0F172A; margin-right:8px; }
-.dc-col-cnt { font-size:12px; font-weight:700; border-radius:20px; padding:3px 10px; }
-.dc-col-body {
-  flex:1; padding:12px 12px 4px; display:flex; flex-direction:column; gap:9px;
-  overflow-y:auto;
-  scrollbar-width:thin; scrollbar-color:rgba(24,24,27,0.2) transparent;
-}
-.dc-col-add {
-  margin:auto 12px 14px; margin-top:auto; background:none;
-  border:1.5px dashed #D4D4D8; border-radius:12px;
-  padding:10px; color:#71717A; font-size:13px; font-weight:600; cursor:pointer;
-  display:flex; align-items:center; justify-content:center; gap:6px;
-  transition:border-color 0.2s,color 0.2s,background 0.2s;
-  flex-shrink:0;
-}
-.dc-col-add:hover { border-color:var(--acc,#18181B); color:var(--acc,#18181B); background:rgba(24,24,27,0.04); }
-
-/* ── Card ── */
-.dc-card {
-  background:#FAFAFA; border:1px solid #E4E4E7; border-radius:16px;
-  padding:12px; cursor:pointer; transition:transform 0.15s,box-shadow 0.15s,border-color 0.15s;
-}
-.dc-card:hover { transform:translateY(-2px); box-shadow:0 4px 12px rgba(24,24,27,0.06); border-color:var(--acc,#18181B); background:#fff; }
-.dc-card-row { display:flex; align-items:center; gap:10px; }
-.dc-av { width:38px; height:38px; border-radius:12px; font-size:13px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-.dc-ci { flex:1; min-width:0; }
-.dc-cn { font-size:13px; font-weight:700; color:#0F172A; margin:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.dc-cp { font-size:11px; color:#64748B; margin:1px 0 0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.dc-badge { font-size:10px; font-weight:700; border-radius:20px; padding:3px 8px; flex-shrink:0; }
-.dc-extra { font-size:10px; color:#64748B; font-weight:500; margin:6px 0 0; padding-top:6px; border-top:1px solid #E2E8F0; }
-.dc-empty { text-align:center; color:#94A3B8; font-size:12px; padding:24px 12px; font-style:italic; }
-
-/* ── Right Panel ── */
-.dc-panel { display:flex; flex-direction:column; gap:16px; }
-.dc-pcard {
-  background:#fff; border-radius:22px; padding:18px;
-  border:1px solid #E2E8F0;
-  box-shadow:0 2px 12px rgba(15,23,42,0.04);
-}
-
-/* Donut card: dark bg */
-.dc-pcard.dark {
-  background:#0F172A;
-  border-color:#1E293B;
-}
-.dc-pcard-lbl { font-size:13px; font-weight:700; color:#0F172A; margin:0 0 14px; }
-.dc-donut { display:flex; flex-direction:column; align-items:center; gap:14px; }
-.dc-donut-leg { width:100%; }
-.dc-leg-row { display:flex; align-items:center; gap:8px; font-size:12px; color:rgba(255,255,255,0.7); padding:3px 0; font-weight:500; }
-.dc-dot { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
-
-/* Dept rows */
-.dc-dept-row { display:flex; align-items:center; gap:8px; padding:6px 0; border-bottom:1px solid rgba(124,58,237,0.07); }
-.dc-dept-row:last-child { border-bottom:none; }
-.dc-dept-dot { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
-.dc-dept-nm { flex:1; font-size:12px; color:#5B4D8A; font-weight:500; }
-.dc-dept-cnt { font-size:12px; font-weight:800; color:#1E1147; }
-
-/* ── Calendar ── */
-.dc-cal { width:100%; }
-.dc-cal-hdr { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
-.dc-cal-mon { font-size:14px; font-weight:800; color:#0F172A; }
-.dc-cal-nav { background:#F4F4F5; border:none; cursor:pointer; border-radius:8px; width:28px; height:28px; display:flex; align-items:center; justify-content:center; font-size:17px; color:#18181B; font-weight:700; transition:background 0.2s; }
-.dc-cal-nav:hover { background:#18181B; color:#fff; }
-.dc-cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; }
-.dc-cal-dow { text-align:center; font-size:10px; font-weight:700; color:#A1A1AA; padding:3px 0; text-transform:uppercase; }
-.dc-cal-day { text-align:center; font-size:11px; font-weight:600; color:#18181B; padding:6px 2px; border-radius:8px; cursor:pointer; position:relative; transition:all 0.15s; }
-.dc-cal-day.empty { color:transparent; pointer-events:none; cursor:default; }
-.dc-cal-day.selected { background:#18181B !important; color:#fff !important; font-weight:800; box-shadow:0 3px 10px rgba(24,24,27,0.3); transform:scale(1.05); }
-.dc-cal-day.today:not(.selected) { border:2px solid #18181B; color:#18181B; font-weight:800; }
-.dc-cal-day.att:not(.selected)::after { content:''; position:absolute; bottom:2px; left:50%; transform:translateX(-50%); width:4px; height:4px; border-radius:50%; background:#0D9488; }
-.dc-cal-day.leave:not(.selected)::after { content:''; position:absolute; bottom:2px; left:50%; transform:translateX(-50%); width:4px; height:4px; border-radius:50%; background:#D97706; }
-.dc-cal-day:not(.empty):not(.selected):hover { background:#F4F4F5; color:#18181B; }
-
-/* ── Attendance Code Banner ── */
-.dc-code-banner {
-  display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px;
-  padding:18px 24px;
-  border-radius:20px;
-  background:#FAFAFA;
-  border:2px dashed #D4D4D8;
-  box-shadow:0 2px 8px rgba(24,24,27,0.04);
-  animation:dcFade 0.4s ease 0.02s both;
-  transition:all 0.3s;
-}
-.dc-code-banner.active {
-  background:#FEF3C7;
-  border-color:#F59E0B;
-  box-shadow:0 4px 18px rgba(217,119,6,0.15);
-  animation:dcFade 0.4s ease 0.02s both, codePulse 3s ease-in-out infinite;
-}
-.dc-code-banner-left { display:flex; align-items:center; gap:14px; }
-.dc-code-banner-icon { font-size:28px; filter:drop-shadow(0 2px 6px rgba(217,119,6,0.3)); }
-.dc-code-banner-label { font-size:15px; font-weight:800; color:#18181B; margin:0 0 2px; }
-.dc-code-banner-sub   { font-size:11px; color:#71717A; margin:0; }
-.dc-code-banner-right { display:flex; align-items:center; gap:12px; }
-.dc-code-banner-val {
-  font-size:26px; font-weight:900; font-family:'Courier New',monospace;
-  color:#B45309; letter-spacing:0.12em;
-  background:#FEF3C7; padding:8px 20px; border-radius:12px;
-  border:1px solid #FDE68A;
-  text-shadow:0 1px 8px rgba(217,119,6,0.2);
-  min-width:180px; text-align:center;
-}
-.dc-code-banner-copy {
-  background:#7C3AED; color:#fff;
-  border:none; cursor:pointer; border-radius:12px; padding:10px 20px;
-  font-size:14px; font-weight:700;
-  box-shadow:0 2px 8px rgba(124,58,237,0.25);
-  transition:background 0.2s, transform 0.15s;
-  white-space:nowrap;
-}
-.dc-code-banner-copy:hover { background:#6D28D9; transform:translateY(-1px); }
-@keyframes codePulse {
-  0%,100% { box-shadow:0 4px 24px rgba(124,58,237,0.15); }
-  50%      { box-shadow:0 4px 32px rgba(124,58,237,0.32); }
-}
-
-/* ── Dots dropdown ── */
-.dc-menu-wrap { position:relative; }
-.dc-dots.active { background:#F0EEFF; color:#7C3AED; border-color:#C4B5FD; }
-.dc-dropdown {
-  position:absolute; top:calc(100% + 10px); right:0;
-  background:#fff; border-radius:18px;
-  border:1px solid rgba(124,58,237,0.15);
-  box-shadow:0 16px 48px rgba(124,58,237,0.18),0 4px 16px rgba(0,0,0,0.08);
-  padding:10px; min-width:210px; z-index:200;
-  animation:dropIn 0.18s cubic-bezier(0.16,1,0.3,1);
-}
-.dc-dropdown-title {
-  font-size:10px; font-weight:800; color:#C4B5FD;
-  text-transform:uppercase; letter-spacing:0.12em;
-  padding:4px 10px 8px; margin:0;
-  border-bottom:1px solid rgba(124,58,237,0.08); margin-bottom:6px;
-}
-.dc-dropdown-item {
-  display:flex; align-items:center; gap:10px;
-  width:100%; padding:10px 12px; border:none; background:none;
-  border-radius:12px; cursor:pointer; text-align:left;
-  font-size:13px; font-weight:600; color:#1E1147;
-  transition:background 0.15s,transform 0.1s;
-}
-.dc-dropdown-item:hover { background:#F0EEFF; color:#7C3AED; transform:translateX(3px); }
-.dc-dropdown-icon { font-size:16px; width:22px; text-align:center; flex-shrink:0; }
-@keyframes dropIn { from{opacity:0;transform:translateY(-8px) scale(0.96)} to{opacity:1;transform:translateY(0) scale(1)} }
-
-/* Animation */
-@keyframes dcFade { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
-
-/* Responsive */
-@media(max-width:1100px){ .dc-main{grid-template-columns:1fr;} .dc-panel{flex-direction:row;flex-wrap:wrap;} .dc-pcard{flex:1;min-width:220px;} }
-@media(max-width:800px){ .dc-stats-row{grid-template-columns:repeat(2,1fr);} }
-@media(max-width:700px){ .dc-cols{grid-template-columns:1fr;} .dc-wrap{padding:16px;} }
-`;
+/* ── MAIN COMPONENT ─────────────────────────────────────────────────────────── */
 
 /* ── MAIN COMPONENT ─────────────────────────────────────────────────────────── */
 const AdminDashboard = () => {
@@ -554,7 +375,6 @@ const AdminDashboard = () => {
 
   return (
     <div className="dc-root">
-      <style>{DASH_STYLES}</style>
       <Navbar />
       <div className="dc-wrap">
 
@@ -604,7 +424,7 @@ const AdminDashboard = () => {
         <div className={`dc-code-banner${todayCode ? ' active' : ''}`}>
           <div className="dc-code-banner-left">
             <div className="dc-code-banner-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" style={{ width: 28, height: 28, color: '#D97706' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" /></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" style={{ width: 18, height: 18, color: '#D97706' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" /></svg>
             </div>
             <div>
               <p className="dc-code-banner-label">Today's Attendance Code</p>
@@ -674,10 +494,8 @@ const AdminDashboard = () => {
           {/* ── Right panel ── */}
           <div className="dc-panel">
 
-            {/* Donut — dark card */}
-            <div className="dc-pcard dark">
-              <DonutChart present={present} onLeave={lvCnt} absent={absent} total={total || 1} />
-            </div>
+            {/* 3D Flip Donut Chart Card */}
+            <DonutChart present={present} onLeave={lvCnt} absent={absent} total={total || 1} />
 
             {/* Departments */}
             <div className="dc-pcard">
@@ -777,10 +595,10 @@ const AdminDashboard = () => {
               <div className="pt-2 flex items-center justify-between border-t border-slate-100">
                 <span className="text-xs font-semibold text-slate-500">Current Status:</span>
                 <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${selectedLeaveModal.status === 'Approved'
-                    ? 'bg-emerald-100 text-emerald-700 border border-emerald-200'
-                    : selectedLeaveModal.status === 'Rejected'
-                      ? 'bg-rose-100 text-rose-700 border border-rose-200'
-                      : 'bg-amber-100 text-amber-700 border border-amber-200'
+                  ? 'bg-emerald-100 text-emerald-700 border border-emerald-200'
+                  : selectedLeaveModal.status === 'Rejected'
+                    ? 'bg-rose-100 text-rose-700 border border-rose-200'
+                    : 'bg-amber-100 text-amber-700 border border-amber-200'
                   }`}>
                   <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
