@@ -14,9 +14,7 @@ const Login = () => {
       <div className="bg-white/90 backdrop-blur-xl border border-slate-200/90 rounded-3xl shadow-xl shadow-slate-900/5 w-full max-w-2xl relative z-10 animate-fade-in p-8 md:p-12">
         <div className="text-center mb-10">
           <div className="inline-flex justify-center mb-4 cursor-pointer group" onClick={() => navigate('/')}>
-            <div className="w-16 h-16 rounded-2xl bg-white p-1 flex items-center justify-center shadow-lg border border-slate-200 group-hover:scale-105 transition-transform">
-              <img src="/logo.png" alt="EMS Pro Logo" className="w-full h-full object-contain drop-shadow-sm" />
-            </div>
+            <img src="/logo.png" alt="EMS Pro Logo" className="h-20 sm:h-24 w-auto object-contain group-hover:scale-105 transition-transform drop-shadow-md" />
           </div>
           <h1 className="text-3xl md:text-4xl font-extrabold text-[#0F172A] tracking-tight">
             Select Your Portal

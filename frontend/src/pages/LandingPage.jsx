@@ -120,9 +120,7 @@ const LandingPage = () => {
           
           {/* Logo */}
           <div className="flex items-center gap-3 cursor-pointer group" onClick={() => navigate('/')}>
-            <div className="w-12 h-12 rounded-2xl bg-white/90 border border-slate-200/80 p-1 flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
-              <img src="/logo.png" alt="EMS Pro Logo" className="w-full h-full object-contain drop-shadow-sm" />
-            </div>
+            <img src="/logo.png" alt="EMS Pro Logo" className="h-11 sm:h-14 w-auto object-contain transition-transform group-hover:scale-105" />
             <div>
               <span className="text-xl font-black text-[#0F172A] tracking-tight">EMS<span style={{ color: timeTheme.accentColor }}>.pro</span></span>
               <span className="block text-[10px] uppercase tracking-wider font-extrabold text-slate-400">Workforce OS</span>
