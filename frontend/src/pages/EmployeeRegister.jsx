@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import api from '../api/axios';
 
 const EmployeeRegister = () => {
@@ -71,30 +71,37 @@ const EmployeeRegister = () => {
   };
 
   return (
-    <div className="min-h-screen app-theme-bg flex items-center justify-center p-4 relative overflow-hidden">
-      
-      
+    <div className="min-h-screen bg-[#F8FAFC] text-[#0F172A] flex items-center justify-center p-4 relative overflow-hidden font-sans selection:bg-[#7C3AED]/20 selection:text-[#7C3AED]">
+      {/* Background Decorator Lights */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[400px] pointer-events-none overflow-hidden opacity-60">
+        <div className="absolute top-[-100px] left-[20%] w-[450px] h-[450px] rounded-full bg-gradient-to-br from-[#7C3AED]/20 to-[#2563EB]/10 blur-3xl"></div>
+        <div className="absolute top-[-50px] right-[20%] w-[380px] h-[380px] rounded-full bg-gradient-to-bl from-[#0D9488]/15 to-[#D97706]/10 blur-3xl"></div>
+      </div>
 
-      <div className="bg-primary-2/95 border border-primary-3 rounded-3xl shadow-2xl w-full max-w-md p-8 md:p-10 relative z-10 animate-fade-in">
-        <div className="text-center mb-7">
+      <div className="bg-white/90 backdrop-blur-xl border border-slate-200/90 rounded-3xl shadow-xl shadow-slate-900/5 w-full max-w-md relative z-10 animate-fade-in p-8 md:p-10 my-8">
+        {/* Header */}
+        <div className="text-center mb-8">
           <div className="inline-flex justify-center mb-4 cursor-pointer group" onClick={() => navigate('/')}>
             <img src="/logo.png" alt="EMS Pro Logo" className="h-20 sm:h-24 w-auto object-contain group-hover:scale-105 transition-transform drop-shadow-md" />
           </div>
-          <h2 className="text-3xl md:text-4xl leading-tight font-bold text-primary-5 w-fit mx-auto pb-2">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0F172A] tracking-tight">
             Employee Registration
-          </h2>
-          <p className="text-primary-4 mt-2">Complete your profile to get started</p>
+          </h1>
+          <p className="text-slate-500 text-sm mt-1.5 font-medium">Complete your personal workforce profile</p>
         </div>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 p-3 mb-5 rounded-lg animate-shake text-sm">
-            {error}
+          <div className="p-3.5 mb-6 bg-red-50 border border-red-200 text-red-700 text-xs sm:text-sm font-semibold rounded-xl animate-shake flex items-center gap-2">
+            <svg className="w-4 h-4 shrink-0 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <span>{error}</span>
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs uppercase tracking-wide font-semibold text-primary-4 mb-1.5">
+            <label className="block text-xs uppercase tracking-wider font-bold text-slate-500 mb-1.5">
               Full Name <span className="text-red-500">*</span>
             </label>
             <input
@@ -102,14 +109,14 @@ const EmployeeRegister = () => {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="w-full px-4 py-2.5 border border-primary-3 bg-primary-2/90 text-primary-5 rounded-lg focus:ring-2 focus:ring-primary-4"
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 text-[#0F172A] placeholder-slate-400 focus:bg-white focus:border-[#7C3AED] focus:ring-4 focus:ring-[#7C3AED]/10 transition-all font-medium text-sm outline-none"
               placeholder="Enter your full name"
               required
             />
           </div>
 
           <div>
-            <label className="block text-xs uppercase tracking-wide font-semibold text-primary-4 mb-1.5">
+            <label className="block text-xs uppercase tracking-wider font-bold text-slate-500 mb-1.5">
               Work Email <span className="text-red-500">*</span>
             </label>
             <input
@@ -117,15 +124,15 @@ const EmployeeRegister = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-4 py-2.5 border border-primary-3 bg-primary-2/90 text-primary-5 rounded-lg focus:ring-2 focus:ring-primary-4"
-              placeholder="your.email@company.com"
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 text-[#0F172A] placeholder-slate-400 focus:bg-white focus:border-[#7C3AED] focus:ring-4 focus:ring-[#7C3AED]/10 transition-all font-medium text-sm outline-none"
+              placeholder="your.email@ems.com"
               required
             />
-            <p className="text-xs text-primary-4 mt-1">Use the email provided by your administrator</p>
+            <p className="text-[11px] text-slate-400 mt-1 font-medium">Use the email address provided by your administrator</p>
           </div>
 
           <div>
-            <label className="block text-xs uppercase tracking-wide font-semibold text-primary-4 mb-1.5">
+            <label className="block text-xs uppercase tracking-wider font-bold text-slate-500 mb-1.5">
               Password <span className="text-red-500">*</span>
             </label>
             <div className="relative">
@@ -134,14 +141,14 @@ const EmployeeRegister = () => {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 pr-10 border border-primary-3 bg-primary-2/90 text-primary-5 rounded-lg focus:ring-2 focus:ring-primary-4"
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 text-[#0F172A] placeholder-slate-400 focus:bg-white focus:border-[#7C3AED] focus:ring-4 focus:ring-[#7C3AED]/10 transition-all font-medium text-sm outline-none pr-12"
                 placeholder="Create a strong password"
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer"
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors focus:outline-none"
                 title={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? (
@@ -160,7 +167,7 @@ const EmployeeRegister = () => {
           </div>
 
           <div>
-            <label className="block text-xs uppercase tracking-wide font-semibold text-primary-4 mb-1.5">
+            <label className="block text-xs uppercase tracking-wider font-bold text-slate-500 mb-1.5">
               Confirm Password <span className="text-red-500">*</span>
             </label>
             <div className="relative">
@@ -169,14 +176,14 @@ const EmployeeRegister = () => {
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 pr-10 border border-primary-3 bg-primary-2/90 text-primary-5 rounded-lg focus:ring-2 focus:ring-primary-4"
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 text-[#0F172A] placeholder-slate-400 focus:bg-white focus:border-[#7C3AED] focus:ring-4 focus:ring-[#7C3AED]/10 transition-all font-medium text-sm outline-none pr-12"
                 placeholder="Confirm your password"
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer"
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors focus:outline-none"
                 title={showConfirmPassword ? "Hide password" : "Show password"}
               >
                 {showConfirmPassword ? (
@@ -197,29 +204,30 @@ const EmployeeRegister = () => {
           <button
             type="submit"
             disabled={loading}
-            className="btn-primary"
+            className="w-full py-3.5 px-6 rounded-xl text-sm font-extrabold text-white bg-[#7C3AED] hover:bg-[#6D28D9] shadow-lg shadow-[#7C3AED]/20 hover:shadow-xl transition-all cursor-pointer flex items-center justify-center gap-2 mt-2"
           >
-            {loading ? 'Registering...' : 'Complete Registration'}
+            {loading ? (
+              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+            ) : (
+              <span>Complete Registration</span>
+            )}
           </button>
         </form>
 
-        <div className="mt-6 text-center">
-          <p className="text-primary-4 text-sm">
+        <div className="mt-6 text-center pt-5 border-t border-slate-200/80">
+          <p className="text-xs sm:text-sm text-slate-500 font-medium">
             Already registered?{' '}
-            <button
-              onClick={() => navigate('/login')}
-              className="text-primary-4 hover:text-primary-3 font-semibold transition-colors duration-300"
-            >
+            <Link to="/employee-login" className="font-bold text-[#7C3AED] hover:underline transition-colors">
               Login here
-            </button>
+            </Link>
           </p>
         </div>
 
-        <div className="mt-6 p-4 bg-primary-1 border border-primary-3 rounded-xl">
-          <p className="text-sm text-primary-4 font-semibold mb-1">Important</p>
-          <p className="text-xs text-primary-4/85">
-            You must use the email address that was added by your administrator.
-            If your email is not on file, please contact HR.
+        <div className="mt-5 p-3.5 bg-slate-50 border border-slate-200/90 rounded-xl">
+          <p className="text-xs font-bold text-[#0F172A] mb-0.5">Important Note</p>
+          <p className="text-[11px] text-slate-500 leading-normal">
+            You must use the work email address provided by your administrator.
+            Contact HR if your record is not yet provisioned.
           </p>
         </div>
       </div>
