@@ -56,11 +56,9 @@ const Signup = () => {
 
       <div className="bg-primary-2/90 backdrop-blur-xl border border-primary-3 rounded-3xl shadow-2xl w-full max-w-md relative z-10 animate-fade-in p-8 md:p-10">
         <div className="text-center mb-8">
-          <div className="inline-flex justify-center mb-5">
-            <div className="icon-container p-4 rounded-2xl shadow-lg">
-              <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3M7 7h10M7 11h6m-6 4h10M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z" />
-              </svg>
+          <div className="inline-flex justify-center mb-5 cursor-pointer group" onClick={() => navigate('/')}>
+            <div className="w-16 h-16 rounded-2xl bg-white p-1 flex items-center justify-center shadow-lg border border-slate-200 group-hover:scale-105 transition-transform">
+              <img src="/logo.png" alt="EMS Pro Logo" className="w-full h-full object-contain drop-shadow-sm" />
             </div>
           </div>
           <h1 className="text-3xl md:text-4xl leading-tight font-bold text-primary-5 w-fit mx-auto pb-2">

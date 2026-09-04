@@ -77,10 +77,10 @@ const EmployeeRegister = () => {
 
       <div className="bg-primary-2/95 border border-primary-3 rounded-3xl shadow-2xl w-full max-w-md p-8 md:p-10 relative z-10 animate-fade-in">
         <div className="text-center mb-7">
-          <div className="inline-block p-3.5 icon-container rounded-2xl mb-4 shadow-lg">
-            <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
+          <div className="inline-flex justify-center mb-4 cursor-pointer group" onClick={() => navigate('/')}>
+            <div className="w-16 h-16 rounded-2xl bg-white p-1 flex items-center justify-center shadow-lg border border-slate-200 group-hover:scale-105 transition-transform">
+              <img src="/logo.png" alt="EMS Pro Logo" className="w-full h-full object-contain drop-shadow-sm" />
+            </div>
           </div>
           <h2 className="text-3xl md:text-4xl leading-tight font-bold text-primary-5 w-fit mx-auto pb-2">
             Employee Registration

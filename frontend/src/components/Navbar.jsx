@@ -71,10 +71,8 @@ const Navbar = () => {
 
         {/* Brand Header */}
         <div className="nb-brand" onClick={() => navigate('/dashboard')}>
-          <div className="nb-logo-ring">
-            <svg width="28" height="28" fill="none" stroke="#fff" strokeWidth="2.2" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-            </svg>
+          <div className="w-11 h-11 flex items-center justify-center rounded-xl bg-white/10 p-1 transition-transform hover:scale-105">
+            <img src="/logo.png" alt="EMS Logo" className="w-full h-full object-contain drop-shadow-md" />
           </div>
           {!isCollapsed && (
             <div className="nb-brand-text">

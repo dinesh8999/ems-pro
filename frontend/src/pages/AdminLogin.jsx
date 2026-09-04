@@ -65,10 +65,8 @@ const AdminLogin = () => {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex justify-center mb-4 cursor-pointer group" onClick={() => navigate('/')}>
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#0F172A] to-[#1E293B] text-white flex items-center justify-center shadow-lg shadow-slate-900/15 group-hover:scale-105 transition-transform">
-              <svg className="w-7 h-7 text-[#0D9488]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
+            <div className="w-16 h-16 rounded-2xl bg-white p-1 flex items-center justify-center shadow-lg border border-slate-200 group-hover:scale-105 transition-transform">
+              <img src="/logo.png" alt="EMS Pro Logo" className="w-full h-full object-contain drop-shadow-sm" />
             </div>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0F172A] tracking-tight">
