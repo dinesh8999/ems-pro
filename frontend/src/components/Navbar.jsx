@@ -71,7 +71,9 @@ const Navbar = () => {
 
         {/* Brand Header */}
         <div className="nb-brand" onClick={() => navigate('/dashboard')}>
-          <img src="/logo.png" alt="EMS Logo" className="h-12 w-auto object-contain transition-transform hover:scale-105" />
+          <div className="bg-white rounded-2xl p-2.5 shadow-lg border border-slate-100 flex items-center justify-center transition-transform hover:scale-105">
+            <img src="/logo.png" alt="EMS Logo" className="h-9 sm:h-10 w-auto object-contain" />
+          </div>
           {!isCollapsed && (
             <div className="nb-brand-text">
               <div className="nb-brand-name">EMS Pro</div>
