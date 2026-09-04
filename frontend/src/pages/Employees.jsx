@@ -160,9 +160,9 @@ const Employees = () => {
             </div>
             <button
               onClick={handleAddEmployee}
-              className="btn-primary"
+              className="px-6 py-3.5 rounded-xl bg-[#0F172A] hover:bg-[#1E293B] text-white font-extrabold text-xs sm:text-sm shadow-lg shadow-slate-900/10 hover:shadow-xl transition-all cursor-pointer flex items-center gap-2 self-start md:self-auto"
             >
-              + Add Employee
+              <span>+ Add Employee</span>
             </button>
           </div>
 

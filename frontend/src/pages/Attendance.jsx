@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import AnimatedBackground from '../components/AnimatedBackground';
+import EmployeeForm from '../components/EmployeeForm';
 import api from '../api/axios';
 
 const Attendance = () => {
@@ -14,6 +15,7 @@ const Attendance = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedMonth, setSelectedMonth] = useState('all');
   const [selectedYear, setSelectedYear] = useState('all');
+  const [showAddEmployeeModal, setShowAddEmployeeModal] = useState(false);
 
   const [checkInData, setCheckInData] = useState({
     departmentCode: ''
@@ -22,6 +24,24 @@ const Attendance = () => {
   useEffect(() => {
     fetchAttendance();
   }, []);
+
+  const handleCreateEmployee = async (formData) => {
+    if (formData.email && !formData.email.trim().toLowerCase().endsWith('@ems.com')) {
+      alert('Employee email address must end with @ems.com (e.g. user@ems.com)');
+      return;
+    }
+    try {
+      const response = await api.post('/employees', formData);
+      if (response.data.success) {
+        alert(response.data.message || 'Employee created successfully');
+        setShowAddEmployeeModal(false);
+        fetchAttendance();
+      }
+    } catch (error) {
+      console.error('Error creating employee:', error);
+      alert(error.response?.data?.message || 'Failed to create employee');
+    }
+  };
 
   const fetchAttendance = async () => {
     try {
@@ -231,6 +251,15 @@ const Attendance = () => {
             </h1>
             <p className="text-primary-4 mt-2 text-base md:text-lg">Track your daily attendance and work hours</p>
           </div>
+
+          {!isEmployee && (
+            <button
+              onClick={() => setShowAddEmployeeModal(true)}
+              className="px-5 py-3 rounded-xl bg-[#0F172A] hover:bg-[#1E293B] text-white font-extrabold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all cursor-pointer flex items-center gap-2 self-start md:self-auto"
+            >
+              <span>+ Add Employee</span>
+            </button>
+          )}
         </div>
 
         {/* KPI Summary Cards */}
@@ -541,6 +570,13 @@ const Attendance = () => {
         </div>
 
       </div>
+
+      {showAddEmployeeModal && (
+        <EmployeeForm
+          onSubmit={handleCreateEmployee}
+          onCancel={() => setShowAddEmployeeModal(false)}
+        />
+      )}
     </div>
   );
 };

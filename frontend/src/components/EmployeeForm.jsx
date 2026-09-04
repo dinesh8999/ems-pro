@@ -39,54 +39,66 @@ const EmployeeForm = ({ employee, onSubmit, onCancel }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-primary-2/95 border border-primary-3 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="p-6">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-primary-5 w-fit pb-1">
-            {employee ? 'Edit Employee' : 'Add New Employee'}
-          </h2>
-          
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-xs uppercase tracking-wide font-semibold text-primary-4 mb-1.5">
-                Full Name *
-              </label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-2.5 border-0 rounded-lg shadow-md focus:ring-0 focus:outline-none focus:shadow-xl bg-primary-2 text-primary-5"
-                placeholder="John Doe"
-              />
-            </div>
+    <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fade-in">
+      <div className="bg-white border border-slate-200 rounded-3xl shadow-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar p-6 sm:p-8">
+        <div className="flex items-center justify-between pb-4 mb-6 border-b border-slate-100">
+          <div>
+            <h2 className="text-2xl font-extrabold text-[#0F172A] tracking-tight">
+              {employee ? 'Edit Employee' : 'Add New Employee'}
+            </h2>
+            <p className="text-xs text-slate-500 font-medium mt-1">Fill in workforce details to provision employee record</p>
+          </div>
+          <button
+            onClick={onCancel}
+            className="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-700 flex items-center justify-center transition-colors cursor-pointer"
+            title="Close modal"
+          >
+            ✕
+          </button>
+        </div>
+        
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-xs uppercase tracking-wider font-bold text-slate-500 mb-1.5">
+              Full Name <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 text-[#0F172A] placeholder-slate-400 focus:bg-white focus:border-[#0D9488] focus:ring-4 focus:ring-[#0D9488]/10 transition-all font-medium text-sm outline-none"
+              placeholder="e.g. John Doe"
+            />
+          </div>
 
-            <div>
-              <label className="block text-xs uppercase tracking-wide font-semibold text-primary-4 mb-1.5">
-                Email *
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-2.5 border-0 rounded-lg shadow-md focus:ring-0 focus:outline-none focus:shadow-xl bg-primary-2 text-primary-5"
-                placeholder="john.doe@company.com"
-              />
-            </div>
+          <div>
+            <label className="block text-xs uppercase tracking-wider font-bold text-slate-500 mb-1.5">
+              Work Email (@ems.com) <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 text-[#0F172A] placeholder-slate-400 focus:bg-white focus:border-[#0D9488] focus:ring-4 focus:ring-[#0D9488]/10 transition-all font-medium text-sm outline-none"
+              placeholder="e.g. john.doe@ems.com"
+            />
+          </div>
 
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs uppercase tracking-wide font-semibold text-primary-4 mb-1.5">
-                Department *
+              <label className="block text-xs uppercase tracking-wider font-bold text-slate-500 mb-1.5">
+                Department <span className="text-red-500">*</span>
               </label>
               <select
                 name="department"
                 value={formData.department}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2.5 border-0 rounded-lg shadow-md focus:ring-0 focus:outline-none focus:shadow-xl bg-primary-2 text-primary-5"
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 text-[#0F172A] focus:bg-white focus:border-[#0D9488] focus:ring-4 focus:ring-[#0D9488]/10 transition-all font-medium text-sm outline-none"
               >
                 <option value="">Select Department</option>
                 {departments.map(dept => (
@@ -96,8 +108,8 @@ const EmployeeForm = ({ employee, onSubmit, onCancel }) => {
             </div>
 
             <div>
-              <label className="block text-xs uppercase tracking-wide font-semibold text-primary-4 mb-1.5">
-                Position *
+              <label className="block text-xs uppercase tracking-wider font-bold text-slate-500 mb-1.5">
+                Position <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -105,14 +117,16 @@ const EmployeeForm = ({ employee, onSubmit, onCancel }) => {
                 value={formData.position}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2.5 border-0 rounded-lg shadow-md focus:ring-0 focus:outline-none focus:shadow-xl bg-primary-2 text-primary-5"
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 text-[#0F172A] placeholder-slate-400 focus:bg-white focus:border-[#0D9488] focus:ring-4 focus:ring-[#0D9488]/10 transition-all font-medium text-sm outline-none"
                 placeholder="Software Engineer"
               />
             </div>
+          </div>
 
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs uppercase tracking-wide font-semibold text-primary-4 mb-1.5">
-                Salary *
+              <label className="block text-xs uppercase tracking-wider font-bold text-slate-500 mb-1.5">
+                Salary ($) <span className="text-red-500">*</span>
               </label>
               <input
                 type="number"
@@ -121,14 +135,14 @@ const EmployeeForm = ({ employee, onSubmit, onCancel }) => {
                 onChange={handleChange}
                 required
                 min="0"
-                className="w-full px-4 py-2.5 border-0 rounded-lg shadow-md focus:ring-0 focus:outline-none focus:shadow-xl bg-primary-2 text-primary-5"
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 text-[#0F172A] placeholder-slate-400 focus:bg-white focus:border-[#0D9488] focus:ring-4 focus:ring-[#0D9488]/10 transition-all font-medium text-sm outline-none"
                 placeholder="50000"
               />
             </div>
 
             <div>
-              <label className="block text-xs uppercase tracking-wide font-semibold text-primary-4 mb-1.5">
-                Join Date *
+              <label className="block text-xs uppercase tracking-wider font-bold text-slate-500 mb-1.5">
+                Join Date <span className="text-red-500">*</span>
               </label>
               <input
                 type="date"
@@ -136,27 +150,27 @@ const EmployeeForm = ({ employee, onSubmit, onCancel }) => {
                 value={formData.joinDate}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2.5 border-0 rounded-lg shadow-md focus:ring-0 focus:outline-none focus:shadow-xl bg-primary-2 text-primary-5"
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 text-[#0F172A] focus:bg-white focus:border-[#0D9488] focus:ring-4 focus:ring-[#0D9488]/10 transition-all font-medium text-sm outline-none"
               />
             </div>
+          </div>
 
-            <div className="flex justify-end space-x-3 pt-4">
-              <button
-                type="button"
-                onClick={onCancel}
-                className="px-4 py-2 border border-primary-3 rounded-lg text-primary-4 hover:bg-secondary-3 transition-all duration-300"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="btn-primary"
-              >
-                {employee ? 'Update' : 'Create'}
-              </button>
-            </div>
-          </form>
-        </div>
+          <div className="flex items-center justify-end gap-3 pt-6 border-t border-slate-100">
+            <button
+              type="button"
+              onClick={onCancel}
+              className="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-700 font-bold text-xs sm:text-sm hover:bg-slate-100 transition-all cursor-pointer"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-6 py-2.5 rounded-xl bg-[#0F172A] hover:bg-[#1E293B] text-white font-extrabold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all cursor-pointer"
+            >
+              {employee ? 'Update Employee' : 'Create'}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
